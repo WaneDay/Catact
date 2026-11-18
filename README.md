@@ -5,6 +5,7 @@
 没有 FX5U 实机，也能在 EBPro 里点按钮、看指示灯、改 D 寄存器；改动实时反映到 GX Simulator3 的软元件里。
 
 > 当前版本：**v1.0.6**（2026-11-18）  
+> 下载：[Releases](https://github.com/WaneDay/Catact/releases/latest)  
 > 默认中文界面，可在 `选项 → 语言` 切回 English。  
 > 本仓库只保留源码、测试、构建脚本和教程，不包含历史测试版本。
 
@@ -150,14 +151,14 @@ GUI 只用 Python 标准库，Python 3.10+ 即可。
 
 ### 桥（32 位 Python）
 
-1. 安装 32 位 Python 3.12（[python.org Windows downloads](https://www.python.org/downloads/windows/)，选 32-bit installer）。
-2. 安装依赖：
+- 安装 32 位 Python 3.12（[python.org Windows downloads](https://www.python.org/downloads/windows/)，选 32-bit installer）。
+- 安装依赖：
 
 ```powershell
 C:\Path\To\Python312-32\python.exe -m pip install -r requirements.txt
 ```
 
-3. 把 32 位 Python 放到默认位置：
+- 把 32 位 Python 放到默认位置：
 
 ```
 app\python32\python.exe
@@ -165,7 +166,7 @@ app\python32\python.exe
 
 或者启动一次 GUI，关闭后编辑 `app\config.json` 的 `python32`，指向你的 32 位 `python.exe`。
 
-4. 重新启动 GUI，点「▶ 启动」。
+- 重新启动 GUI，点「▶ 启动」。
 
 更细的环境说明见 [docs/BUILD.md](docs/BUILD.md)。
 
