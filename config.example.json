@@ -1,0 +1,9 @@
+{
+  "python32": "C:\\Path\\To\\Python312-32\\python.exe",
+  "host": "127.0.0.1",
+  "port": 502,
+  "station": 1,
+  "refresh_ms": 400,
+  "lang": "zh",
+  "mx_utility": ""
+}

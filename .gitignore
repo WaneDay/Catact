@@ -1,0 +1,24 @@
+# 运行时 / 构建产物
+app/config.json
+app/modbus_debug.log*
+*.log
+__pycache__/
+*.py[cod]
+build/
+dist/
+release/
+installer/
+*.exe
+*.zip
+*.7z
+*.msi
+
+# 32 位 Python 运行时（第三方二进制，不入库）
+app/python32/*
+!app/python32/README.md
+
+# 编辑器
+.vscode/
+.idea/
+*.suo
+*.user

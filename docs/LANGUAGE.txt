@@ -1,0 +1,106 @@
+Catact v1.0.6 · 语言设置说明
+=====================================
+日期：2026-11-18
+基线：v1.0.5（Win7 经典工控界面 + MX 一键工具）
+本次只加语言设置与中文界面字体，不动桥逻辑。
+
+一、怎么切换
+------------
+菜单：选项 → 语言 → 中文 / English
+
+- 默认：中文（第一次运行、或 config.json 里没有 lang 时）
+- English：就是 v1.0.5 原来的英文界面
+- 选择后程序会提示“需要重启”，确认后自动重启生效
+- 切换语言会先停止当前桥；重启后需要再点一次「▶ 启动」
+- 语言保存在 config.json 的 "lang": "zh" / "en"，下次启动沿用
+- 如果程序目录不可写、config.json 保存失败，会弹提示并保持当前语言，不会
+  “选了英文、重启还是中文”
+
+二、中文界面范围
+----------------
+已翻译：
+- 菜单：文件 / 编辑 / 视图 / 选项 / 帮助
+- 工具栏：清空 / 换算 / 导出 / 启动 / 停止 / 重连
+- 工程树：Catact 工程 → 桥（控制 / 仿真 / 设置）、元件、诊断、帮助
+- 分组框：MX 环境 / 元件监视 / Y 输出 / 监视窗口 / 地址参考 / 写入日志
+- 状态栏：桥 / 地址 / 模式 / 报警 / 时间
+- 工具栏状态：未启动 / 检测中 / 已连接 / 等待仿真 / 连接中 / 启动中 / 端口占用
+- MX 环境：已安装 / 未检测到 / 打开 MX 工具 / 定位 / 重新检测
+- 监视窗口标题、窗口列表、前置/关闭按钮
+- 桥状态、仿真状态、桥参数、使用说明、关于、MX 检查等对话框
+
+保留原样：
+- 写入日志里的运行日志（原本就是中文）
+- 地址表里的 M/X/Y/D 等元件名、0x/4x 地址
+- CSV 导出表头（元件 / EBPro地址 / 值）
+- 地址换算窗口的元件名 / EBPro 地址标签（原本就是中文）
+
+三、字体选择
+------------
+中文界面不再用 Segoe UI，而是按以下顺序找第一个可用字体：
+
+1. Microsoft YaHei UI（Win10/11 推荐，9pt）
+2. Microsoft YaHei（Win7/8 兼容）
+3. SimSun（宋体，老系统兜底）
+4. Segoe UI（最后兜底）
+
+英文界面保持 v1.0.5 的 Segoe UI 9，保证和现在的英文版一致。
+字体只在启动时选一次；切换语言重启后自动换成对应字体。
+
+四、实现位置
+------------
+MXBridgeTool\app\main.py
+
+- APP_VERSION = "1.0.6"
+- LANG 全局变量 + _TR 双语表 + T(key) 取词函数
+- DEFAULT_CFG["lang"] = "zh"
+- App._apply_fonts()：按语言选字体并重设 FONT / FONT_B / FONT_TITLE / MONO
+- App._build_menu()：Options → Language 子菜单（中文 / English）
+- App.change_language() / App.restart_app()：保存 lang → 重启自身
+- 所有静态 UI 文案改为 T("key")；动态状态（已连接/等待仿真/运行中…）
+  也改为 T("key")，避免切换后残留英文
+
+五、验证结果
+------------
+- py -3 tests\test_offline.py        35/35 OK（桥逻辑未动）
+- py -3 tests\test_gui_state.py      5/5 OK（按钮互斥/灰色禁用）
+- py -3 tests\test_gui_layout.py     14/14 OK（默认中文菜单、双语切换、
+                                     中文字体、布局不溢出、MX 分组）
+- py -3 tests\test_gui_bridge_flow.py 1/1 OK（1502 端口真实启动桥→停止）
+- 实测默认标题：Catact 1.0.6 - FX5U Modbus 桥
+- 实测默认字体：Microsoft YaHei UI 9
+- 实测英文模式：File / ▶ Run / Open MX Utility，字体 Segoe UI 9
+
+六、怎么验收
+------------
+1. 解压 2_Catact_1.0.6_免安装版.zip，双击 Catact.exe
+2. 界面应为中文，菜单「文件 / 编辑 / 视图 / 选项 / 帮助」
+3. 选项 → 语言 → English → 确认重启
+4. 重启后界面应回到原来的英文（File / ▶ Run / Open MX Utility）
+5. 再切回 中文，确认重启后中文恢复
+6. 两种语言下都点一次「启动 / 停止」，按钮互斥应与 1.0.4/1.0.5 一致
+
+七、涉及文件
+------------
+源码：
+  MXBridgeTool\app\main.py                  双语表、字体、语言菜单、重启
+  MXBridgeTool\tests\test_gui_layout.py     新增默认中文/双语切换/字体/语言保存测试
+版本：
+  MXBridgeTool\build_release.py             VER=1.0.6
+  MXBridgeTool\Catact.iss                   AppVersion=1.0.6
+  MXBridgeTool\README.txt                   首行与语言说明同步 1.0.6
+交付：
+  2_Catact_1.0.6_免安装版.zip
+  2_Catact_1.0.6_免安装版\Catact\
+  3_Catact_1.0.6_安装包.exe
+文档：
+  0_先看这里.txt / 4_用户使用说明.txt / 9_Catact项目日志.md
+
+八、回滚
+--------
+本轮改前的 1.0.5 成品备份：
+  备份_修改前_v1.0.5_20261118_2235\
+含 1.0.5 免安装 zip、Catact_1.0.5.exe、1.0.5 安装包。
+需要回到 1.0.5 行为时，直接用该目录里的 exe 或 zip 即可。
+
+—— 以上
